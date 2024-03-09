@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> e1ab21bf6bcf5c3cf2fed8bc3689cf13358fc7d6
 # WMM_TFG
 WWM code for statistical analysis for TFC **Assessing the use of True North for aeronautical navigation**
 
@@ -9,4 +12,8 @@ In Functons folder there are the following files: **TO BE UPDATED AS NEW FUNCTIO
 * **File_cration.py:** Creates the input file for the *wmm_file.exe* executable with the information in the Excel file created with the Database
 * **wmm_file_function.py:** Calls the *wmm_file.exe* with the specific files created for it
 
+<<<<<<< HEAD
 All these functions are called in the correct order in the **Main.py**, directory_wmm needs to be adjusted where the folder is saved for each user
+=======
+All these functions are called in the correct order in the **Main.py**, directory_wmm needs to be adjusted where the folder is saved for each user
+>>>>>>> e1ab21bf6bcf5c3cf2fed8bc3689cf13358fc7d6
