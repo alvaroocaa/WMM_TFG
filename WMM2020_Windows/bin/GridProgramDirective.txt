@@ -1,0 +1,8 @@
+
+Results printed in Console
+Minimum Latitude: 23.500000		Maximum Latitude: 58.700000		Step Size: 0.010000
+Minimum Longitude: 12.300000		Maximum Longitude: 53.600000		Step Size: 0.010000
+Minimum Altitude above MSL: 15.000000	Maximum Altitude above MSL: 1896.000000	Step Size: 0.500000
+Starting Date: 0.850000		Ending Date: 15.600000		Step Time: 0.100000
+
+
