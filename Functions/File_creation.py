@@ -18,13 +18,13 @@ def input_file(excel_file_path):
         # Lon: -180 to 180 (Use - to denote Western longitude.)
         
         if(row['lon_dir'] == "W"):
-            longitude = "-" + str(row['lon_deg']) + " "
+            longitude = "-" + str(row['lon_deg']) 
         else:
-            longitude = str(row['lon_deg']) + " "
+            longitude = str(row['lon_deg']) 
         
         input_file_txt.write(
             "2024.0 " + # Date: xxxx.xxx for decimal  (2023.7)
-            "E " + # Altitude: M - Above mean sea level: E above WGS84 Ellipsoid
+            "M " + # Altitude: M - Above mean sea level: E above WGS84 Ellipsoid
             "M" + str(row['altitude']) + " " + # Altitude: Kxxxxxx.xxx for kilometers  (K1000.13), Mxxxxxx.xxx for meters  (m1389.24), Fxxxxxx.xxx for feet  (F192133.73)
             latitude + longitude # Lat/Lon: xxx.xxx in decimal  (-76.53) (Lat and Lon must be specified in the same format.)
             + "\n"

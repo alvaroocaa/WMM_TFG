@@ -1,5 +1,5 @@
 import pandas as pd
-import openpyxl
+import pycountry_convert as pc
 
 '''
 Output_file format: (+ description of each element)
@@ -40,20 +40,45 @@ dF_nT -> TOTAL intensity (nano Teslas / year)
 δY_nT ->
 δZ_nT ->
 δF_nT ->
+
+-----------------------------------------
+
+Filtrar aeroports
+
+Dividir en continents -> Buscar llibreria que a partir dels paisos per poder separar en continents
+Regions aeronautiques -> FIRs, intentar buscar base de dades també per tenir classificació + aeronautica
+
+
 '''
 
 
 
-def wmm_file_analysis(file_path, output_path):
+def wmm_file_analysis(file_path, output_path, Data_excel_path):
     
-    df = pd.read_csv(file_path, delim_whitespace=True)
-    df.to_excel(output_path, index = False)
+    analysis_excel = pd.read_csv(file_path, delim_whitespace=True)
     
-    # Computation of interesting values
+    Data_excel = pd.read_excel(Data_excel_path, index_col=None, na_values=['NA'], usecols="B:F")
     
-    magentic_variation_minutesxyear = df['dD_min'].tolist()
+    analysis_excel = pd.concat([analysis_excel, Data_excel], axis=1)                               
+                               
+    analysis_excel.to_excel(output_path, index = False)
+    
+    
+    
+    # Computation of interesting values (1st approach)
+    
+    magentic_variation_minutesxyear = analysis_excel['dD_min'].tolist()
     magentic_variation_degreesxyear = [x / 60 for x in magentic_variation_minutesxyear]
     
     average_magvar_degreesxyear = sum(magentic_variation_degreesxyear) / len(magentic_variation_degreesxyear)
     
     return average_magvar_degreesxyear
+
+
+#Function to get the continent given a country name to add a column to the excel with the continent name to filter the analysis
+def country_to_continent(country_name):
+    
+    country_alpha2 = pc.country_name_to_country_alpha2(country_name, cn_name_format="upper")
+    country_continent_code = pc.country_alpha2_to_continent_code(country_alpha2)
+    country_continent_name = pc.convert_continent_code_to_continent_name(country_continent_code)
+    return country_continent_name
