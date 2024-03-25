@@ -55,6 +55,8 @@ Regions aeronautiques -> FIRs, intentar buscar base de dades també per tenir cl
 
 def wmm_file_analysis(file_path, output_path, Data_excel_path):
     
+    #Format output as excel
+    
     analysis_excel = pd.read_csv(file_path, delim_whitespace=True)
     
     Data_excel = pd.read_excel(Data_excel_path, index_col=None, na_values=['NA'], usecols="B:F")
@@ -63,22 +65,98 @@ def wmm_file_analysis(file_path, output_path, Data_excel_path):
                                
     analysis_excel.to_excel(output_path, index = False)
     
+    #Create a new column to filter by contintent
     
+    Countries = pd.read_excel(output_path, index_col=None, na_values=['NA'], usecols="Z").values.flatten()
     
-    # Computation of interesting values (1st approach)
+    #Control error for bad written countries:
     
-    magentic_variation_minutesxyear = analysis_excel['dD_min'].tolist()
-    magentic_variation_degreesxyear = [x / 60 for x in magentic_variation_minutesxyear]
+    countries = switch_country(Countries)
     
-    average_magvar_degreesxyear = sum(magentic_variation_degreesxyear) / len(magentic_variation_degreesxyear)
+    Continents = country_to_continent(countries)
     
-    return average_magvar_degreesxyear
+    analysis_excel['Continent'] = Continents
+    
+    analysis_excel.to_excel(output_path, index = False)
 
 
 #Function to get the continent given a country name to add a column to the excel with the continent name to filter the analysis
-def country_to_continent(country_name):
+def country_to_continent(country_name_vector):
     
-    country_alpha2 = pc.country_name_to_country_alpha2(country_name, cn_name_format="upper")
-    country_continent_code = pc.country_alpha2_to_continent_code(country_alpha2)
-    country_continent_name = pc.convert_continent_code_to_continent_name(country_continent_code)
-    return country_continent_name
+    continent_vector = []
+    
+    for country in country_name_vector:
+        
+        try:
+            
+            country_alpha2 = pc.country_name_to_country_alpha2(country, cn_name_format="upper")
+            country_continent_code = pc.country_alpha2_to_continent_code(country_alpha2)
+            country_continent_name = pc.convert_continent_code_to_continent_name(country_continent_code)
+            continent_vector.append(country_continent_name)
+            
+        except Exception as e:
+            continent_vector.append("")
+            
+            
+    return continent_vector
+
+def switch_country(argument_list):
+    switcher = {
+        "UK": "Great Britain",
+        "ENGLAND": "Great Britain",
+        "NORTH IRELAND": "IRELAND",
+        "WALES": "Great Britain",
+        "GUERNSEY ISLD.": "Great Britain",
+        "SCOTLAND": "Great Britain",
+        "CANARY ISLANDS": "SPAIN",
+        "ACORES": "Portugal",
+        "CENTRAL AFRICAN REP.": "SUDAN",
+        "DIEGO GARCIA ISLAND": "SUDAN",
+        "COMOROS ISLANDS": "SUDAN",
+        "MAYOTTE ISLAND": "SUDAN",
+        "REUNION ISLAND": "SUDAN",
+        "SAO TOME & PRINCIPE": "SUDAN",
+        "ZAIRE": "SUDAN",
+        "SPANISH NORTH AFRICA": "MOROCCO",
+        "GUINEA BISSAU": "SUDAN",
+        "CAPE VERDE ISLANDS": "SUDAN",
+        "CORSE ISL.": "ITALY",
+        "ST. PIERRE & MIQUELON": "CANADA",
+        "MADEIRA": "PORTUGAL",
+        "BOSNIA-HERCEGOVINA": "SUDAN",
+        "FORMER MACEDONIA": "GREECE",
+        "YUGOSLAVIA": "Serbia",
+        "TURKS & CAICOS I.": "DOMINICAN REPUBLIC",
+        "TUVALU I.": "AUSTRALIA",
+        "TUVALU ISLAND": "AUSTRALIA",
+        "WALLIS & FUTUNA": "AUSTRALIA",
+        "TUAMOTU ISLANDS": "AUSTRALIA",
+        "PHOENIX ISL.": "AUSTRALIA",
+        "MARIANA ISLANDS": "PHILIPPINES",
+        "JOHNSTON ATOLL": "MEXICO",
+        "MIDWAY ISLAND": "USA",
+        "PALAU ISLAND": "INDONESIA",
+        "KOREA": "SOUTH KOREA",
+        "ANTARCTICA": "USA",
+        "GALAPAGOS I. (ECUADOR": "ECUADOR",
+        "SURINAM": "BRAZIL",
+        "ANTILLES": "DOMINICAN REPUBLIC",
+        "VIRGIN ISL.": "PUERTO RICO",
+        "ST. KITTS & NEVIS": "PUERTO RICO",
+        "ANGUILLA ISL.": "PUERTO RICO",
+        "MONTSERRAT ISLAND": "PUERTO RICO",
+        "TRINIDAD & TOBAGO": "VENEZUELA",
+        "ST.VINCENT/GRENADINES": "VENEZUELA",
+        "EAST TIMOR": "INDONESIA",
+        "WEST TIMOR": "INDONESIA",
+        "ENGALND": "GREAT BRITAIN",
+        "FAROE ISL.": "NORWAY",
+        "LUXEMBURG": "LUXEMBOURG",
+        "BOPHUTHATSWANA": "BOTSWANA", 
+        "FRENCH GUYANA": "BRAZIL",
+        "LEEWARD ISLANDS": "BRAZIL",
+        "ST. LUCIA ISLAND": "DOMINICAN REPUBLIC" 
+    }
+    return [switcher.get(country, country) for country in argument_list]
+
+
