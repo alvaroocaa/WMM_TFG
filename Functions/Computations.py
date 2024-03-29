@@ -90,7 +90,7 @@ def mag_angle_var(Excel_file):
     ax.coastlines()
     
     ax.gridlines()
-    plt.title('Magnetic Variation at Different Places')
+    plt.title('Magnetic Variation')
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
     

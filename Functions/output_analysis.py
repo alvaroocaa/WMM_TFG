@@ -114,13 +114,13 @@ def country_to_magzone(latitude_vector):
     for latitude in latitude_vector:
             
         if latitude < -64:
-            magzone = "SMP"
+            magzone = "South Magnetic Pole"
             
         elif latitude > 67:
-            magzone = "NMP"
+            magzone = "North Magentic Pole"
             
         else:
-            magzone = "ME"
+            magzone = "Magnetic Equator"
     
         magzone_vector.append(magzone)
         
