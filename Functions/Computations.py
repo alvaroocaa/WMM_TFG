@@ -1,5 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np     
+import cartopy.crs as ccrs
 
 def mag_angle_var(Excel_file):
     
@@ -34,7 +36,6 @@ def mag_angle_var(Excel_file):
     plt.ylabel('Average Magnetic Variation (º)')
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
-    plt.show()
     
     #---------------------------------------------------------------------------------------- PER MAGZONES
     
@@ -64,7 +65,34 @@ def mag_angle_var(Excel_file):
     plt.ylabel('Average Magnetic Variation (º)')
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
+
+    #---------------------------------------------------------------------------------------- PLOT MAP WITH GRADIENT
+    
+    IATA_codes = values['iata_code'].tolist()
+    latitudes = values['Latitude'].tolist()
+    longitudes = values['Longitude'].tolist()
+    magvars = [value / 60 for value in values['dD_min'].tolist()]
+    
+    places = []
+
+    # Iterate over the lists simultaneously and construct the matrix
+    for iata, lat, lon, magvar in zip(IATA_codes, latitudes, longitudes, magvars):  
+        row = [iata, lat, lon, magvar]
+        places.append(row)
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1, projection = ccrs.PlateCarree())
+    
+    sc = ax.scatter(longitudes, latitudes, c=magvars, cmap='magma', transform=ccrs.PlateCarree(), edgecolors='k')
+    cbar = plt.colorbar(sc)
+    cbar.set_label('Magnetic Variation (deg)')
+              
+    ax.coastlines()
+    
+    ax.gridlines()
+    plt.title('Magnetic Variation at Different Places')
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+    
     plt.show()
-
-
     
