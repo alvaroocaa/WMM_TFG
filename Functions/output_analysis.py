@@ -69,13 +69,19 @@ def wmm_file_analysis(file_path, output_path, Data_excel_path):
     
     Countries = pd.read_excel(output_path, index_col=None, na_values=['NA'], usecols="Z").values.flatten()
     
+    Latitudes = pd.read_excel(output_path, index_col=None, na_values=['NA'], usecols="D").values.flatten()
+    
     #Control error for bad written countries:
     
     countries = switch_country(Countries)
     
     Continents = country_to_continent(countries)
     
+    MagZones = country_to_magzone(Latitudes)
+    
     analysis_excel['Continent'] = Continents
+    
+    analysis_excel['MagZones'] = MagZones
     
     analysis_excel.to_excel(output_path, index = False)
 
@@ -100,6 +106,27 @@ def country_to_continent(country_name_vector):
             
     return continent_vector
 
+#Function to organize by coordinates: North Magnetic Pole, South Magnetic Pole and Magnetic Equator
+def country_to_magzone(latitude_vector):
+    
+    magzone_vector = []
+    
+    for latitude in latitude_vector:
+            
+        if latitude < -64:
+            magzone = "SMP"
+            
+        elif latitude > 67:
+            magzone = "NMP"
+            
+        else:
+            magzone = "ME"
+    
+        magzone_vector.append(magzone)
+        
+    return magzone_vector
+
+#Function to change ciuntry to be correctly detected by pycountry_converter
 def switch_country(argument_list):
     switcher = {
         "UK": "Great Britain",
