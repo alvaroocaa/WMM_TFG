@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np     
 import cartopy.crs as ccrs
+import matplotlib.colors as mcolors
+import matplotlib.patches as mpatches
 
 def mag_angle_var(Excel_file):
     
@@ -66,33 +68,63 @@ def mag_angle_var(Excel_file):
     plt.xticks(rotation=45, ha='right')
     plt.tight_layout()
 
-    #---------------------------------------------------------------------------------------- PLOT MAP WITH GRADIENT
-    
-    IATA_codes = values['iata_code'].tolist()
+    #------------------------------------------------------------------------------------- PLOT MAP WITH GRADIENT OF ANNUAL RATE (º/year)
+   
     latitudes = values['Latitude'].tolist()
     longitudes = values['Longitude'].tolist()
     magvars = [value / 60 for value in values['dD_min'].tolist()]
-    
-    places = []
 
-    # Iterate over the lists simultaneously and construct the matrix
-    for iata, lat, lon, magvar in zip(IATA_codes, latitudes, longitudes, magvars):  
-        row = [iata, lat, lon, magvar]
-        places.append(row)
+    fig = plt.figure(figsize=(100, 75))  # Increase figure size
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
 
-    fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1, projection = ccrs.PlateCarree())
-    
-    sc = ax.scatter(longitudes, latitudes, c=magvars, cmap='magma', transform=ccrs.PlateCarree(), edgecolors='k')
+    # Adjust marker size
+    marker_size = 50
+
+    sc = ax.scatter(longitudes, latitudes, s=marker_size, c=magvars, cmap='Paired',
+                    transform=ccrs.PlateCarree(), edgecolors='k')
+
     cbar = plt.colorbar(sc)
     cbar.set_label('Magnetic Variation (deg)')
-              
+
     ax.coastlines()
-    
-    ax.gridlines()
+
     plt.title('Magnetic Variation')
+
+    # Remove axis labels
+    ax.set_xticks([])
+    ax.set_yticks([])
+    
+    #------------------------------------------------------------------------------------- PLOT MAP WITH CHANGE + / -
+
+    fig2 = plt.figure(figsize=(100, 75))  # Increase figure size
+    ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+    
+    cmap2 = plt.cm.RdBu  # Red-Blue colormap
+    norm2 = plt.Normalize(min(magvars), max(magvars))
+    
+    colors = ['red' if var < 0 else 'blue' for var in magvars]
+    
+    ax2.scatter(longitudes, latitudes, s=marker_size, c=colors,
+                transform=ccrs.PlateCarree(), edgecolors='k')
+    
+
+    # Create custom legend handles
+    legend_handles = [
+        mpatches.Patch(color='red', label='Negative'),
+        mpatches.Patch(color='blue', label='Positive')
+    ]
+
+    # Add legend
+    plt.legend(handles=legend_handles)
+
+    plt.title('Magnetic Variation, POSITIVE AND NEGATIVE')
     plt.xlabel('Longitude')
-    plt.ylabel('Latitude')
+    plt.ylabel('Lattitude')
     
+    ax2.coastlines()
+
+    # Remove axis labels
+    ax2.set_xticks([])
+    ax2.set_yticks([])
+        
     plt.show()
-    
