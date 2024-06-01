@@ -4,7 +4,7 @@ from Functions.File_creation import input_file
 from Functions.output_analysis import wmm_file_analysis
 from Functions.Computations import mag_angle_var
     
-directory_wmm = "C:/Users/Alvaro/Documents/Uni/8e quadri/TFG/Codi/WMM_TFG"
+directory_wmm = "/Users/alvaro/Documents/Uni/TFG"
 
 Data_excel = "airports from SQL.xlsx"
 
