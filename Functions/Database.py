@@ -3,7 +3,7 @@ import pandas as pd
 
 def call_database():
 
-    conn = sqlite3.connect('Functions\global_airports_sqlite.db')  # Replace 'your_database.db' with the actual name of your database file
+    conn = sqlite3.connect('global_airports_sqlite.db') 
 
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM airports;")

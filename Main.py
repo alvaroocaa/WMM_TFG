@@ -10,7 +10,7 @@ Data_excel = "airports from SQL.xlsx"
 
 call_database()
 input_file(Data_excel)
-wmm_file_call("input_file.txt", "output_file.txt", directory_wmm)
+wmm_file_call("input_file.txt", "output_file.txt", "/Users/alvaro/Documents/Uni/TFG/WMM_TFG")
 wmm_file_analysis("output_file.txt", "analysis file.xlsx", Data_excel)
 mag_angle_var("analysis file.xlsx")
 
