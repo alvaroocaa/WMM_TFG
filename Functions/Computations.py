@@ -5,13 +5,13 @@ import cartopy.crs as ccrs
 import matplotlib.colors as mcolors
 import matplotlib.patches as mpatches
 
-def mag_angle_var(Excel_file):
+def plots(Excel_file):
     
     values = pd.read_excel(Excel_file)
     
     #---------------------------------------------------------------------------------------- PER CONTINENTS
     
-    continents = values['Continent'].tolist()
+    continents = values['continent'].tolist()
     magentic_variation_minutesxyear = values['dD_min'].tolist()
     
     sum_per_continent = {continent: 0 for continent in set(continents)}
@@ -30,14 +30,17 @@ def mag_angle_var(Excel_file):
     continents = list(average_per_continent.keys())
     averages = list(average_per_continent.values()) 
     
-    # Create bar plot
+    #Create bar plot
     plt.figure(figsize=(10, 6))
-    plt.bar(continents, averages, color='skyblue')
-    plt.title('Average Magnetic Variation (º) per year by continent')
-    plt.xlabel('Continent')
-    plt.ylabel('Average Magnetic Variation (º)')
+    plt.rc('font', family='Times New Roman', size=14)
+    plt.bar(continents, averages, color='skyblue', edgecolor='black')
+    plt.title('Average Magnetic Variation (º) per Year by continent', fontsize=18, fontweight='bold')
+    plt.xlabel('Continent', fontsize=16)
+    plt.ylabel('Average Magnetic Variation (º)', fontsize=16)
     plt.xticks(rotation=45, ha='right')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
+    plt.savefig('average_continent_variation.png', dpi=300, bbox_inches='tight')
     
     #---------------------------------------------------------------------------------------- PER MAGZONES
     
@@ -61,12 +64,15 @@ def mag_angle_var(Excel_file):
     
     # Create bar plot
     plt.figure(figsize=(10, 6))
-    plt.bar(magzones, averages, color='skyblue')
-    plt.title('Average Magnetic Variation (º) per year by magnetic zone')
-    plt.xlabel('Magnetic Zone')
-    plt.ylabel('Average Magnetic Variation (º)')
+    plt.rc('font', family='Times New Roman', size=14)
+    plt.bar(magzones, averages, color='skyblue', edgecolor='black')
+    plt.title('Average Magnetic Variation (º) per Year by Magnetic Zone', fontsize=18, fontweight='bold')
+    plt.xlabel('Magnetic Zone', fontsize=16)
+    plt.ylabel('Average Magnetic Variation (º)', fontsize=16)
     plt.xticks(rotation=45, ha='right')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
+    plt.savefig('average_magzone_variation.png', dpi=300, bbox_inches='tight')
 
     #------------------------------------------------------------------------------------- PLOT MAP WITH GRADIENT OF ANNUAL RATE (º/year)
    
@@ -93,14 +99,51 @@ def mag_angle_var(Excel_file):
     # Remove axis labels
     ax.set_xticks([])
     ax.set_yticks([])
+
+    plt.savefig('MagVar.png', dpi=300, bbox_inches='tight')
     
     #------------------------------------------------------------------------------------- PLOT MAP WITH CHANGE + / -
 
+    fig2 = plt.figure(figsize=(15, 10))  # Reduced figure size for better fitting in a thesis
+    ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
+
+    # Color mapping based on magnetic variation
+    colors = ['red' if var < 0 else 'blue' for var in magvars]
+
+    # Scatter plot
+    ax2.scatter(longitudes, latitudes, s=marker_size, c=colors,
+                transform=ccrs.PlateCarree(), edgecolors='k')
+
+    # Create custom legend handles
+    legend_handles = [
+        mpatches.Patch(color='red', label='Negative'),
+        mpatches.Patch(color='blue', label='Positive')
+    ]
+
+    # Add legend with increased font size
+    plt.legend(handles=legend_handles, fontsize=14, loc='upper right')
+
+    # Adding title and labels with appropriate font size
+    plt.title('Magnetic Variation: Positive and Negative', fontsize=18, fontweight='bold')
+    plt.xlabel('Longitude', fontsize=16)
+    plt.ylabel('Latitude', fontsize=16)
+
+    # Add coastlines for context
+    ax2.coastlines()
+
+    # Remove axis tick labels
+    ax2.set_xticks([])
+    ax2.set_yticks([])
+
+    # Save the figure with high DPI
+    plt.savefig('magvar_sign_thesis.png', dpi=300, bbox_inches='tight')
+
+    # Display the plot
+    plt.show()
+
+'''
     fig2 = plt.figure(figsize=(100, 75))  # Increase figure size
     ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
-    
-    cmap2 = plt.cm.RdBu  # Red-Blue colormap
-    norm2 = plt.Normalize(min(magvars), max(magvars))
     
     colors = ['red' if var < 0 else 'blue' for var in magvars]
     
@@ -126,5 +169,9 @@ def mag_angle_var(Excel_file):
     # Remove axis labels
     ax2.set_xticks([])
     ax2.set_yticks([])
+
+    plt.savefig('magvar_sign.png', dpi=300, bbox_inches='tight')
         
     plt.show()
+    '''
+
