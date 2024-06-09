@@ -7,7 +7,7 @@ import matplotlib.patches as mpatches
 
 def plots(Excel_file):
     
-    values = pd.read_excel(Excel_file)
+    values = pd.read_excel(Excel_file, engine='openpyxl')
     
     #---------------------------------------------------------------------------------------- PER CONTINENTS
     
@@ -65,7 +65,7 @@ def plots(Excel_file):
     # Create bar plot
     plt.figure(figsize=(10, 6))
     plt.rc('font', family='Times New Roman', size=14)
-    plt.bar(magzones, averages, color='skyblue', edgecolor='black')
+    plt.bar(magzones, averages, colormap='skyblue', edgecolor='black')
     plt.title('Average Magnetic Variation (º) per Year by Magnetic Zone', fontsize=18, fontweight='bold')
     plt.xlabel('Magnetic Zone', fontsize=16)
     plt.ylabel('Average Magnetic Variation (º)', fontsize=16)
@@ -106,72 +106,28 @@ def plots(Excel_file):
 
     fig2 = plt.figure(figsize=(15, 10))  # Reduced figure size for better fitting in a thesis
     ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
-
-    # Color mapping based on magnetic variation
     colors = ['red' if var < 0 else 'blue' for var in magvars]
 
-    # Scatter plot
+ 
     ax2.scatter(longitudes, latitudes, s=marker_size, c=colors,
                 transform=ccrs.PlateCarree(), edgecolors='k')
 
-    # Create custom legend handles
+ 
     legend_handles = [
         mpatches.Patch(color='red', label='Negative'),
         mpatches.Patch(color='blue', label='Positive')
     ]
 
-    # Add legend with increased font size
+
     plt.legend(handles=legend_handles, fontsize=14, loc='upper right')
 
-    # Adding title and labels with appropriate font size
     plt.title('Magnetic Variation: Positive and Negative', fontsize=18, fontweight='bold')
     plt.xlabel('Longitude', fontsize=16)
     plt.ylabel('Latitude', fontsize=16)
 
-    # Add coastlines for context
     ax2.coastlines()
-
-    # Remove axis tick labels
     ax2.set_xticks([])
     ax2.set_yticks([])
-
-    # Save the figure with high DPI
     plt.savefig('magvar_sign_thesis.png', dpi=300, bbox_inches='tight')
 
-    # Display the plot
     plt.show()
-
-'''
-    fig2 = plt.figure(figsize=(100, 75))  # Increase figure size
-    ax2 = fig2.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
-    
-    colors = ['red' if var < 0 else 'blue' for var in magvars]
-    
-    ax2.scatter(longitudes, latitudes, s=marker_size, c=colors,
-                transform=ccrs.PlateCarree(), edgecolors='k')
-    
-
-    # Create custom legend handles
-    legend_handles = [
-        mpatches.Patch(color='red', label='Negative'),
-        mpatches.Patch(color='blue', label='Positive')
-    ]
-
-    # Add legend
-    plt.legend(handles=legend_handles)
-
-    plt.title('Magnetic Variation, POSITIVE AND NEGATIVE')
-    plt.xlabel('Longitude')
-    plt.ylabel('Lattitude')
-    
-    ax2.coastlines()
-
-    # Remove axis labels
-    ax2.set_xticks([])
-    ax2.set_yticks([])
-
-    plt.savefig('magvar_sign.png', dpi=300, bbox_inches='tight')
-        
-    plt.show()
-    '''
-
