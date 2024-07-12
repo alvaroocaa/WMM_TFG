@@ -41,7 +41,7 @@ def plots(Excel_file):
     plt.xticks(rotation=45, ha='right')
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
-    plt.savefig('average_continent_variation.png', dpi=300, bbox_inches='tight')
+    plt.savefig('Results/average_continent_variation.png', dpi=300, bbox_inches='tight')
     
     #---------------------------------------------------------------------------------------- PER MAGZONES
     
@@ -73,7 +73,7 @@ def plots(Excel_file):
     plt.xticks(rotation=45, ha='right')
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
-    plt.savefig('average_magzone_variation.png', dpi=300, bbox_inches='tight')
+    plt.savefig('Results/average_magzone_variation.png', dpi=300, bbox_inches='tight')
 
     #------------------------------------------------------------------------------------- PLOT MAP WITH GRADIENT OF ANNUAL RATE (º/year)
    
@@ -101,7 +101,7 @@ def plots(Excel_file):
     ax.set_xticks([])
     ax.set_yticks([])
 
-    plt.savefig('MagVar.png', dpi=300, bbox_inches='tight')
+    plt.savefig('Results/MagVar.png', dpi=300, bbox_inches='tight')
     
     #------------------------------------------------------------------------------------- PLOT MAP WITH CHANGE + / -
 
@@ -129,6 +129,6 @@ def plots(Excel_file):
     ax2.coastlines()
     ax2.set_xticks([])
     ax2.set_yticks([])
-    plt.savefig('magvar_sign_thesis.png', dpi=300, bbox_inches='tight')
+    plt.savefig('Results/magvar_sign_thesis.png', dpi=300, bbox_inches='tight')
 
     plt.show()

@@ -3,7 +3,7 @@ import pandas as pd
 
 def call_database():
 
-    conn = sqlite3.connect('global_airports_sqlite.db') 
+    conn = sqlite3.connect('Necessary files/global_airports_sqlite.db') 
 
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Airport_database;")
@@ -16,7 +16,7 @@ def call_database():
     WHERE elevation_ft = '' OR elevation_ft IS NULL
 """)
 
-    df.to_excel('airports from SQL.xlsx', index=False) #Save Excel
+    df.to_excel('Necessary files/airports from SQL.xlsx', index=False) #Save Excel
 
     #Close connection
     cursor.close()
