@@ -5,6 +5,7 @@ import cartopy.crs as ccrs
 import matplotlib.colors as mcolors
 import matplotlib.patches as mpatches
 
+
 def plots(Excel_file):
     
     values = pd.read_excel(Excel_file, engine='openpyxl')
@@ -65,7 +66,7 @@ def plots(Excel_file):
     # Create bar plot
     plt.figure(figsize=(10, 6))
     plt.rc('font', family='Times New Roman', size=14)
-    plt.bar(magzones, averages, colormap='skyblue', edgecolor='black')
+    plt.bar(magzones, averages, color='skyblue', edgecolor='black')
     plt.title('Average Magnetic Variation (º) per Year by Magnetic Zone', fontsize=18, fontweight='bold')
     plt.xlabel('Magnetic Zone', fontsize=16)
     plt.ylabel('Average Magnetic Variation (º)', fontsize=16)
@@ -80,16 +81,16 @@ def plots(Excel_file):
     longitudes = values['Longitude'].tolist()
     magvars = [value / 60 for value in values['dD_min'].tolist()]
 
-    fig = plt.figure(figsize=(100, 75))  # Increase figure size
+    fig = plt.figure(figsize=(15, 10))  # Increase figure size
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
 
     # Adjust marker size
     marker_size = 50
 
-    sc = ax.scatter(longitudes, latitudes, s=marker_size, c=magvars, cmap='Paired',
+    sc = ax.scatter(longitudes, latitudes, s=marker_size, c=magvars, cmap='spring',
                     transform=ccrs.PlateCarree(), edgecolors='k')
 
-    cbar = plt.colorbar(sc)
+    cbar = plt.colorbar(sc, shrink=0.35)
     cbar.set_label('Magnetic Variation (deg)')
 
     ax.coastlines()
