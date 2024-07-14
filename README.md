@@ -1,4 +1,4 @@
-# WMM_TFG
+# WMM code
 
 WWM (World Magnetic Model) code for statistical analysis for TFG **Assessing the use of True North for aeronautical navigation**
 
@@ -38,7 +38,7 @@ This folder contains the WMM software version valid from 2020 to 2025, necessary
 
 To install and run this project locally, follow these steps:
 
-1. Clone this repository from [GitHub](https://github.com/your-username/your-repository).
+1. Clone this repository from https://github.com/alvaroocaa/WMM_TFG.
 2. Install dependencies using `pip install -r requirements.txt`.
 3. Ensure SQLite and Excel are installed for database operations and data visualization.
 
